@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Lembaga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,11 +28,13 @@ class SiswaController extends Controller
      */
     public function create(Request $request)
     {
+        $lembaga = Lembaga::all();
+
         if ($request->ajax()) {
-            return view('siswa.partials.create')->render();
+            return view('siswa.partials.create', compact('lembaga'))->render();
         }
 
-        return view('siswa.create');
+        return view('siswa.create', compact('lembaga'));
     }
 
     /**
@@ -44,7 +47,7 @@ class SiswaController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:siswa,email',
             'image' => 'nullable|image|max:2048',
-            'lembaga_id' => 'nullable|integer',
+            'lembaga_id' => 'nullable|exists:lembaga,id',
         ]);
 
         if ($request->hasFile('image')) {
@@ -77,11 +80,13 @@ class SiswaController extends Controller
      */
     public function edit(Request $request, Siswa $siswa)
     {
+        $lembaga = Lembaga::all();
+
         if ($request->ajax()) {
-            return view('siswa.partials.edit', compact('siswa'))->render();
+            return view('siswa.partials.edit', compact('siswa', 'lembaga'))->render();
         }
 
-        return view('siswa.edit', compact('siswa'));
+        return view('siswa.edit', compact('siswa', 'lembaga'));
     }
 
     /**
@@ -94,7 +99,7 @@ class SiswaController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:siswa,email,' . $siswa->id,
             'image' => 'nullable|image|max:2048',
-            'lembaga_id' => 'nullable|integer',
+            'lembaga_id' => 'nullable|exists:lembaga,id',
         ]);
 
         if ($request->hasFile('image')) {

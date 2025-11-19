@@ -41,9 +41,15 @@
         </div>
 
         <div class="mb-4">
-            <label for="lembaga_id" class="block text-gray-700 font-semibold mb-2">Lembaga ID</label>
-            <input type="number" id="lembaga_id" name="lembaga_id" value="{{ old('lembaga_id') }}"
-                class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <label for="lembaga_id" class="block text-gray-700 font-semibold mb-2">Lembaga</label>
+            <select id="lembaga_id" name="lembaga_id" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="">-- Pilih Lembaga --</option>
+                @foreach ($lembaga as $item)
+                    <option value="{{ $item->id }}" {{ old('lembaga_id') == $item->id ? 'selected' : '' }}>
+                        {{ $item->nama }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit"
