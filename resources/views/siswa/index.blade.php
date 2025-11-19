@@ -17,6 +17,7 @@
         <table id="siswa-table" class="min-w-full bg-white border border-gray-200 rounded">
             <thead>
                 <tr class="bg-gray-100 text-left">
+                    <th style="display:none">ID</th>
                     <th>NIS</th>
                     <th>Nama</th>
                     <th>Email</th>
@@ -28,6 +29,7 @@
             <tbody>
                 @foreach ($siswa as $item)
                 <tr>
+                    <td style="display:none">{{ $item->id }}</td>
                     <td>{{ $item->nis }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->email }}</td>
@@ -116,8 +118,13 @@
                 }, // Aksi
                 {
                     searchable: false,
-                    targets: [2, 3, 4]
-                } // Email, Image, Lembaga
+                    targets: [3, 4, 5]
+                }, // Email, Image, Lembaga
+                {
+                    targets: 0,
+                    visible: false,
+                    searchable: false
+                },
             ],
             language: {
                 search: "Cari:",
@@ -139,21 +146,27 @@
         // document.getElementById('exportExcel').addEventListener('click', function() {
         //     window.location.href = "{{ route('siswa.export') }}";
         // });
+
         document.getElementById('exportExcel').addEventListener('click', function() {
             let ids = [];
 
-            // ambil baris yang tampil setelah difilter
             table.rows({
                 search: 'applied'
             }).every(function() {
                 let data = this.data();
-                ids.push(data[6]); // kolom ke-6 adalah ID
+                let id = data[0]; // pastikan ini index kolom ID
+                if (id) ids.push(id);
             });
 
-            // redirect ke route export dengan parameter ids[]
-            let url = "{{ route('siswa.export') }}" + "?ids[]=" + ids.join("&ids[]=");
+            if (ids.length === 0) {
+                alert("Tidak ada data untuk di-export.");
+                return;
+            }
 
-            window.location.href = url;
+            const params = new URLSearchParams();
+            ids.forEach(id => params.append('ids[]', id));
+
+            window.location.href = "{{ route('siswa.export') }}?" + params.toString();
         });
 
     });

@@ -143,7 +143,14 @@ class SiswaController extends Controller
      */
     public function export(Request $request)
     {
-        $filteredIds = $request->input('ids', null);
+        $ids = $request->input('ids', null);
+        if (is_array($ids)) {
+            $filteredIds = $ids;
+        } elseif (is_string($ids)) {
+            $filteredIds = explode(',', $ids);
+        } else {
+            $filteredIds = null;
+        }
 
         return Excel::download(
             new SiswaExport($filteredIds),
