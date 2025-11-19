@@ -6,6 +6,8 @@ use App\Models\Siswa;
 use App\Models\Lembaga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SiswaExport;
 
 class SiswaController extends Controller
 {
@@ -134,5 +136,18 @@ class SiswaController extends Controller
         }
 
         return redirect()->route('siswa.index')->with('success', 'Siswa deleted successfully.');
+    }
+
+    /**
+     * Export filtered siswa data to Excel.
+     */
+    public function export(Request $request)
+    {
+        $filteredIds = $request->input('ids', null);
+
+        return Excel::download(
+            new SiswaExport($filteredIds),
+            'siswa_export_' . now()->format('Ymd_His') . '.xlsx'
+        );
     }
 }

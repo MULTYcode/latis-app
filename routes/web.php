@@ -25,3 +25,5 @@ Route::middleware('auth')->get('/dashboard', function () {
 Route::resource('siswa', SiswaController::class)->middleware('auth');
 Route::resource('lembaga', LembagaController::class)->middleware('auth');
 
+
+Route::get('siswa-export', [App\Http\Controllers\SiswaController::class, 'export'])->name('siswa.export')->middleware('auth');
