@@ -9,12 +9,12 @@
 <body class="bg-gray-100 min-h-screen flex">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-white shadow-lg border-r hidden md:block">
-        <div class="p-6 border-b">
-            <h1 class="text-2xl font-bold text-gray-800">MyApp</h1>
+    <aside class="w-64 bg-white shadow-lg border-r hidden md:block flex flex-col">
+        <div class="p-6 border-b flex items-center justify-center h-16">
+            <h1 class="text-2xl font-bold text-gray-800 m-0">MyApp</h1>
         </div>
 
-        <nav class="p-4 space-y-2">
+        <nav class="p-4 space-y-2 flex-grow">
 
             <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-100 text-gray-800 font-semibold">
                 Dashboard
@@ -33,9 +33,9 @@
     <div class="flex-1 flex flex-col">
 
         <!-- TOP NAV -->
-        <header class="bg-white shadow-sm border-b">
-            <div class="max-w-full mx-auto flex justify-between items-center py-4 px-6">
-                <h1 class="text-2xl font-bold text-gray-800">@yield('page_title', 'Dashboard')</h1>
+        <header class="bg-white shadow-sm border-b h-16 flex items-center">
+            <div class="max-w-full mx-auto flex justify-between items-center py-0 px-6 w-full">
+                <h1 class="text-2xl font-bold text-gray-800 m-0">@yield('page_title', 'Dashboard')</h1>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
