@@ -104,7 +104,8 @@
             searching: true,
             ordering: true,
             columnDefs: [
-                { orderable: false, targets: 5 } // Disable ordering on the action column
+                { orderable: false, targets: 5 }, // Disable ordering on the action column
+                { searchable: false, targets: [2,3,4] } // Disable searching on image, lembaga id, and action columns
             ],
             language: {
                 search: "Cari:",
