@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SiswaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,9 +19,10 @@ Route::post('/register', [AuthController::class, 'registerPost'])->name('registe
 
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect('/login');
+    return redirect('/');
 })->name('logout');
 
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+Route::resource('siswa', SiswaController::class)->middleware('auth');
