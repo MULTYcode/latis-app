@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\SiswaController;
 
 Route::get('/', function () {
@@ -26,3 +27,4 @@ Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 Route::resource('siswa', SiswaController::class)->middleware('auth');
+Route::resource('lembaga', LembagaController::class)->middleware('auth');

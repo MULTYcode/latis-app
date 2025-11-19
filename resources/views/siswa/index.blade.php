@@ -17,36 +17,34 @@
     </div>
 
     <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 rounded">
+        <table id="siswa-table" class="min-w-full bg-white border border-gray-200 rounded">
             <thead>
                 <tr class="bg-gray-100 text-left">
-                    <th class="py-2 px-4 border-b">#</th>
-                    <th class="py-2 px-4 border-b">NIS</th>
-                    <th class="py-2 px-4 border-b">Nama</th>
-                    <th class="py-2 px-4 border-b">Email</th>
-                    <th class="py-2 px-4 border-b">Image</th>
-                    <th class="py-2 px-4 border-b">Lembaga ID</th>
-                    <th class="py-2 px-4 border-b">Aksi</th>
+                    <th>NIS</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Image</th>
+                    <th>Lembaga ID</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($siswa as $item)
+                @foreach ($siswa as $item)
                 <tr>
-                    <td class="py-2 px-4 border-b">{{ $loop->iteration + ($siswa->currentPage() - 1) * $siswa->perPage() }}</td>
-                    <td class="py-2 px-4 border-b">{{ $item->nis }}</td>
-                    <td class="py-2 px-4 border-b">{{ $item->name }}</td>
-                    <td class="py-2 px-4 border-b">{{ $item->email }}</td>
-                    <td class="py-2 px-4 border-b">
+                    <td>{{ $item->nis }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>
                         @if($item->image)
                             <img src="{{ asset('storage/' . $item->image) }}" alt="Image" class="h-10 w-10 object-cover rounded">
                         @else
                             -
                         @endif
                     </td>
-                    <td class="py-2 px-4 border-b">{{ $item->lembaga_id ?? '-' }}</td>
-                    <td class="py-2 px-4 border-b space-x-2">
-                        <a href="{{ route('siswa.show', $item) }}" class="text-blue-600 hover:underline">Lihat</a>
-                        <a href="{{ route('siswa.edit', $item) }}" class="text-yellow-600 hover:underline">Edit</a>
+                    <td>{{ $item->lembaga_id ?? '-' }}</td>
+                    <td>
+                        <a href="{{ route('siswa.show', $item) }}" class="text-blue-600 hover:underline mr-2">Lihat</a>
+                        <a href="{{ route('siswa.edit', $item) }}" class="text-yellow-600 hover:underline mr-2">Edit</a>
                         <form action="{{ route('siswa.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus siswa ini?');">
                             @csrf
                             @method('DELETE')
@@ -54,11 +52,7 @@
                         </form>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="py-4 px-4 text-center text-gray-500">Tidak ada data siswa.</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -67,4 +61,37 @@
         {{ $siswa->links() }}
     </div>
 </div>
+
+<!-- DataTables CSS and JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#siswa-table').DataTable({
+            responsive: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            columnDefs: [
+                { orderable: false, targets: 5 } // Disable ordering on the action column
+            ],
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Berikutnya",
+                    previous: "Sebelumnya"
+                },
+                zeroRecords: "Tidak ada data yang cocok",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                infoFiltered: "(disaring dari total _MAX_ entri)"
+            }
+        });
+    });
+</script>
 @endsection
