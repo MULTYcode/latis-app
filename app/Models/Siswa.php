@@ -18,4 +18,12 @@ class Siswa extends Model
         'image',
         'lembaga_id',
     ];
+
+    /**
+     * Get the lembaga that owns the siswa.
+     */
+    public function lembaga()
+    {
+        return $this->belongsTo(Lembaga::class, 'lembaga_id');
+    }
 }

@@ -35,7 +35,7 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $item->lembaga_id ?? '-' }}</td>
+                    <td>{{ $item->lembaga ? $item->lembaga->nama : '-' }}</td>                    
                     <td>
                         <a href="{{ route('siswa.edit', $item) }}" class="text-yellow-600 hover:underline mr-2">Edit</a>
                         <form action="{{ route('siswa.destroy', $item) }}" method="POST" class="inline delete-form">
