@@ -1,14 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
+<div class="container mx-auto px-4 py-6" id="siswa-container" data-success-message="{{ session('success') ?? '' }}">
     <h1 class="text-2xl font-bold mb-4">Daftar Siswa</h1>
-
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="mb-4">
         <a href="{{ route('siswa.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
@@ -43,9 +37,8 @@
                     </td>
                     <td>{{ $item->lembaga_id ?? '-' }}</td>
                     <td>
-                        <a href="{{ route('siswa.show', $item) }}" class="text-blue-600 hover:underline mr-2">Lihat</a>
                         <a href="{{ route('siswa.edit', $item) }}" class="text-yellow-600 hover:underline mr-2">Edit</a>
-                        <form action="{{ route('siswa.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus siswa ini?');">
+                        <form action="{{ route('siswa.destroy', $item) }}" method="POST" class="inline delete-form">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:underline">Hapus</button>
@@ -67,8 +60,44 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('siswa-container');
+        const successMessage = container.getAttribute('data-success-message');
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: successMessage,
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
+
+        // Replace default confirm on delete with SweetAlert
+        const deleteForms = document.querySelectorAll('form.delete-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Yakin ingin menghapus siswa ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // Initialize DataTables
         $('#siswa-table').DataTable({
             responsive: true,
             paging: true,

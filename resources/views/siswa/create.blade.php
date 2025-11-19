@@ -1,8 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container mx-auto px-4 py-6" id="create-siswa-container" data-success-message="{{ session('success') ?? '' }}" data-error-messages="@if($errors->any()){{ implode('<br>', $errors->all()) }}@endif">
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-4">Tambah Siswa</h1>
+<!-- Removed existing error display div -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('create-siswa-container');
+        const successMessage = container.getAttribute('data-success-message');
+        const errorMessages = container.getAttribute('data-error-messages');
+
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: successMessage,
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
+
+        if (errorMessages) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                html: errorMessages,
+                confirmButtonText: 'Tutup'
+            });
+        }
+    });
+</script>
 
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
