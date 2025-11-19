@@ -11,7 +11,7 @@
     <!-- SIDEBAR -->
     <aside class="w-64 bg-white shadow-lg border-r hidden md:block flex flex-col">
         <div class="p-6 border-b flex items-center justify-center h-16">
-            <h1 class="text-2xl font-bold text-gray-800 m-0">MyApp</h1>
+            <h1 class="text-2xl font-bold text-gray-800 m-0">Latis Education</h1>
         </div>
 
         <nav class="p-4 space-y-2 flex-grow">
