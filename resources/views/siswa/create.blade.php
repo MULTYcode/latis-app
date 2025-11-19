@@ -14,8 +14,14 @@
         </div>
     @endif
 
-    <form action="{{ route('siswa.store') }}" method="POST" class="max-w-lg">
+    <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data" class="max-w-lg">
         @csrf
+        <div class="mb-4">
+            <label for="nis" class="block text-gray-700 font-semibold mb-2">NIS</label>
+            <input type="text" id="nis" name="nis" value="{{ old('nis') }}" required
+                class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
         <div class="mb-4">
             <label for="name" class="block text-gray-700 font-semibold mb-2">Nama</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" required
@@ -29,8 +35,14 @@
         </div>
 
         <div class="mb-4">
-            <label for="phone" class="block text-gray-700 font-semibold mb-2">Telepon</label>
-            <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+            <label for="image" class="block text-gray-700 font-semibold mb-2">Image</label>
+            <input type="file" id="image" name="image" accept="image/*"
+                class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <div class="mb-4">
+            <label for="lembaga_id" class="block text-gray-700 font-semibold mb-2">Lembaga ID</label>
+            <input type="number" id="lembaga_id" name="lembaga_id" value="{{ old('lembaga_id') }}"
                 class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
         </div>
 

@@ -21,9 +21,11 @@
             <thead>
                 <tr class="bg-gray-100 text-left">
                     <th class="py-2 px-4 border-b">#</th>
+                    <th class="py-2 px-4 border-b">NIS</th>
                     <th class="py-2 px-4 border-b">Nama</th>
                     <th class="py-2 px-4 border-b">Email</th>
-                    <th class="py-2 px-4 border-b">Telepon</th>
+                    <th class="py-2 px-4 border-b">Image</th>
+                    <th class="py-2 px-4 border-b">Lembaga ID</th>
                     <th class="py-2 px-4 border-b">Aksi</th>
                 </tr>
             </thead>
@@ -31,9 +33,17 @@
                 @forelse ($siswa as $item)
                 <tr>
                     <td class="py-2 px-4 border-b">{{ $loop->iteration + ($siswa->currentPage() - 1) * $siswa->perPage() }}</td>
+                    <td class="py-2 px-4 border-b">{{ $item->nis }}</td>
                     <td class="py-2 px-4 border-b">{{ $item->name }}</td>
                     <td class="py-2 px-4 border-b">{{ $item->email }}</td>
-                    <td class="py-2 px-4 border-b">{{ $item->phone ?? '-' }}</td>
+                    <td class="py-2 px-4 border-b">
+                        @if($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="Image" class="h-10 w-10 object-cover rounded">
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td class="py-2 px-4 border-b">{{ $item->lembaga_id ?? '-' }}</td>
                     <td class="py-2 px-4 border-b space-x-2">
                         <a href="{{ route('siswa.show', $item) }}" class="text-blue-600 hover:underline">Lihat</a>
                         <a href="{{ route('siswa.edit', $item) }}" class="text-yellow-600 hover:underline">Edit</a>
@@ -46,7 +56,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="py-4 px-4 text-center text-gray-500">Tidak ada data siswa.</td>
+                    <td colspan="7" class="py-4 px-4 text-center text-gray-500">Tidak ada data siswa.</td>
                 </tr>
                 @endforelse
             </tbody>

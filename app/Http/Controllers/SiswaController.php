@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SiswaController extends Controller
 {
@@ -39,10 +40,16 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nis' => 'required|string|unique:siswa,nis',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:siswa,email',
-            'phone' => 'nullable|string|max:20',
+            'image' => 'nullable|image|max:2048',
+            'lembaga_id' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('siswa_images', 'public');
+        }
 
         Siswa::create($validated);
 
@@ -83,10 +90,19 @@ class SiswaController extends Controller
     public function update(Request $request, Siswa $siswa)
     {
         $validated = $request->validate([
+            'nis' => 'required|string|unique:siswa,nis,' . $siswa->id,
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:siswa,email,' . $siswa->id,
-            'phone' => 'nullable|string|max:20',
+            'image' => 'nullable|image|max:2048',
+            'lembaga_id' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($siswa->image) {
+                Storage::disk('public')->delete($siswa->image);
+            }
+            $validated['image'] = $request->file('image')->store('siswa_images', 'public');
+        }
 
         $siswa->update($validated);
 
@@ -102,6 +118,10 @@ class SiswaController extends Controller
      */
     public function destroy(Request $request, Siswa $siswa)
     {
+        if ($siswa->image) {
+            Storage::disk('public')->delete($siswa->image);
+        }
+
         $siswa->delete();
 
         if ($request->ajax()) {

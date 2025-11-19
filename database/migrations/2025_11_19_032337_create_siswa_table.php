@@ -15,9 +15,11 @@ class CreateSiswaTable extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
+            $table->string('nis')->unique();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
+            $table->string('image')->nullable();
+            $table->unsignedBigInteger('lembaga_id')->nullable();
             $table->timestamps();
         });
     }
