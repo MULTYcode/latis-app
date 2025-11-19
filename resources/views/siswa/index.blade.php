@@ -136,8 +136,24 @@
         // ============================
         // Export Excel
         // ============================
+        // document.getElementById('exportExcel').addEventListener('click', function() {
+        //     window.location.href = "{{ route('siswa.export') }}";
+        // });
         document.getElementById('exportExcel').addEventListener('click', function() {
-            window.location.href = "{{ route('siswa.export') }}";
+            let ids = [];
+
+            // ambil baris yang tampil setelah difilter
+            table.rows({
+                search: 'applied'
+            }).every(function() {
+                let data = this.data();
+                ids.push(data[6]); // kolom ke-6 adalah ID
+            });
+
+            // redirect ke route export dengan parameter ids[]
+            let url = "{{ route('siswa.export') }}" + "?ids[]=" + ids.join("&ids[]=");
+
+            window.location.href = url;
         });
 
     });

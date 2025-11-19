@@ -8,35 +8,31 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class SiswaExport implements FromCollection, WithHeadings
 {
-    protected $filteredIds;
+    protected $ids;
 
-    public function __construct($filteredIds = null)
+    public function __construct($ids = null)
     {
-        $this->filteredIds = $filteredIds;
+        $this->ids = $ids;
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function collection()
     {
-        $query = Siswa::query();
+        $query = Siswa::with('lembaga');
 
-        if ($this->filteredIds) {
-            $query->whereIn('id', $this->filteredIds);
+        if ($this->ids) {
+            $query->whereIn('id', $this->ids);
         }
 
-        return $query->select('nis', 'name', 'email', 'lembaga_id', 'created_at')->get();
+        return $query->get([
+            'nis',
+            'name',
+            'email',
+            'lembaga_id'
+        ]);
     }
 
     public function headings(): array
     {
-        return [
-            'NIS',
-            'Name',
-            'Email',
-            'Lembaga ID',
-            'Created At',
-        ];
+        return ['NIS', 'Nama', 'Email', 'Lembaga'];
     }
 }
