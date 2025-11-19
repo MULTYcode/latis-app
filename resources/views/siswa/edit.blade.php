@@ -21,7 +21,7 @@
 
         <div class="mb-4">
             <label for="nis" class="block text-gray-700 font-semibold mb-2">NIS</label>
-            <input type="text" id="nis" name="nis" value="{{ old('nis', $siswa->nis) }}" required
+            <input type="number" id="nis" name="nis" value="{{ old('nis', $siswa->nis) }}" required
                 class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
         </div>
 

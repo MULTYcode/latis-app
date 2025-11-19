@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Latis Education')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex">
 
@@ -37,13 +38,35 @@
             <div class="max-w-full mx-auto flex justify-between items-center py-0 px-6 w-full">
                 <h1 class="text-2xl font-bold text-gray-800 m-0">@yield('page_title', 'Dashboard')</h1>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button
-                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow transition">
-                        Logout
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                        <img
+                            src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) }}"
+                            alt="User Avatar"
+                            class="h-8 w-8 rounded-full object-cover"
+                        />
+                        <span class="text-gray-700 font-semibold cursor-pointer">{{ Auth::user()->name }}</span>
+                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
-                </form>
+
+                    <div
+                        x-show="open"
+                        @click.away="open = false"
+                        x-transition
+                        class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50"
+                    >
+                        <a href="{{ route('profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </header>
 
